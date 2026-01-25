@@ -1,0 +1,16 @@
+.table-container .tabulator .tabulator-col {
+    background-color: var(--negro-profundo);
+    color: var(--acero-claro);
+}
+.tabulator .tabulator-footer .tabulator-page {
+    background-color: white;
+    color: var(--negro-profundo);
+    border: 1px solid var(--amarillo-potente);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.tabulator .tabulator-footer .tabulator-page.active {
+    color: var(--rojo-energia);
+    background-color: var(--acero-claro);
+    border-color: var(--negro-profundo);
+}

@@ -1,0 +1,29 @@
+.inventario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(6, 60px);
+  gap: 12px;
+  padding: 12px;
+  min-width: 180px;
+  background: #fff;
+}
+
+.inventario-item {
+  background: #f2f2f2;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Ajuste para el contenedor padre de las dos grids */
+.inventario-multi {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 12px 0;
+}

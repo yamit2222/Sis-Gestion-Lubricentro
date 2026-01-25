@@ -1,0 +1,144 @@
+"use strict";
+import {
+  deleteUserService,
+  getUserService,
+  getUsersService,
+  updateUserService,
+} from "../services/user.service.js";
+import {
+  userBodyValidation,
+  userQueryValidation,
+} from "../validations/user.validation.js";
+import {
+  handleErrorClient,
+  handleErrorServer,
+  handleSuccess,
+} from "../handlers/responseHandlers.js";
+
+export async function getUser(req, res) {
+  try {
+    const { id, email } = req.query;
+
+    const { error } = userQueryValidation.validate({ id, email });
+
+    if (error) return handleErrorClient(res, 400, error.message);
+
+    const [user, errorUser] = await getUserService({ id, email });
+
+    if (errorUser) return handleErrorClient(res, 404, errorUser);
+
+    handleSuccess(res, 200, "Usuario encontrado", user);
+  } catch (error) {
+    handleErrorServer(res, 500, error.message);
+  }
+}
+
+export async function getUsers(req, res) {
+  try {
+    const [users, errorUsers] = await getUsersService();
+
+    if (errorUsers) return handleErrorClient(res, 404, errorUsers);
+
+    users.length === 0
+      ? handleSuccess(res, 204)
+      : handleSuccess(res, 200, "Usuarios encontrados", users);
+  } catch (error) {
+    handleErrorServer(
+      res,
+      500,
+      error.message,
+    );
+  }
+}
+
+export async function updateUser(req, res) {
+  try {
+    const { id, email } = req.query;
+    const { body } = req;
+
+    const { error: queryError } = userQueryValidation.validate({
+      id,
+      email,
+    });
+
+    if (queryError) {
+      if (queryError.details) {
+        const errors = {};
+        queryError.details.forEach((err) => {
+          if (err.path && err.path.length > 0) {
+            errors[err.path[0]] = err.message;
+          }
+        });
+        return handleErrorClient(
+          res,
+          400,
+          "Error de validación en la consulta",
+          errors
+        );
+      }
+      return handleErrorClient(
+        res,
+        400,
+        "Error de validación en la consulta",
+        queryError.message,
+      );
+    }
+
+    const { error: bodyError } = userBodyValidation.validate(body, { abortEarly: false });
+
+    if (bodyError) {
+      // Mapear todos los errores de Joi a un objeto { campo: mensaje }
+      const errors = {};
+      bodyError.details.forEach((err) => {
+        if (err.path && err.path.length > 0) {
+          errors[err.path[0]] = err.message;
+        }
+      });
+      return handleErrorClient(
+        res,
+        400,
+        "Error de validación en los datos enviados",
+        errors
+      );
+    }
+
+    const [user, userError] = await updateUserService({ id, email }, body);
+
+    if (userError) return handleErrorClient(res, 400, "Error modificando al usuario", userError);
+
+    handleSuccess(res, 200, "Usuario modificado correctamente", user);
+  } catch (error) {
+    handleErrorServer(res, 500, error.message);
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const { id, email } = req.query;
+
+    const { error: queryError } = userQueryValidation.validate({
+      id,
+      email,
+    });
+
+    if (queryError) {
+      return handleErrorClient(
+        res,
+        400,
+        "Error de validación en la consulta",
+        queryError.message,
+      );
+    }
+
+    const [userDelete, errorUserDelete] = await deleteUserService({
+      id,
+      email,
+    });
+
+    if (errorUserDelete) return handleErrorClient(res, 404, "Error eliminado al usuario", errorUserDelete);
+
+    handleSuccess(res, 200, "Usuario eliminado correctamente", userDelete);
+  } catch (error) {
+    handleErrorServer(res, 500, error.message);
+  }
+}

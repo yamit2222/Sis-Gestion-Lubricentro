@@ -11,12 +11,12 @@ import {
 
 
 export const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
+  DATABASE,
+  DB_USERNAME,
+  DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    host: DB_HOST,
+    port: DB_PORT,
     dialect: 'mysql',
     logging: process.env.NODE_ENV === 'development' ? false : false,
     define: {

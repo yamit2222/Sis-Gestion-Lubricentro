@@ -10,11 +10,13 @@ COPY package*.json ./
 # Instalar dependencias
 RUN npm install
 
+RUN npm run build
+
 # Copiar el resto del código
 COPY . .
 
 # Exponer el puerto
-EXPOSE 1657
+EXPOSE 80
 
 # Comando para ejecutar la aplicación en modo desarrollo
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

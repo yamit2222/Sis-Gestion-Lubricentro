@@ -1,7 +1,26 @@
-FROM node:18-alpine
+# Usar una imagen base de Node.js para construir el proyecto
+FROM node:18-alpine AS builder
+
+# Establecer el directorio de trabajo
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
+
+# Copiar todos los archivos del proyecto
 COPY . .
-EXPOSE 8080
-CMD ["npm", "start"]
+
+# Instalar dependencias
+RUN npm install
+
+# Construir el proyecto para producción
+RUN npm run build
+
+# Usar una imagen ligera de Nginx para servir los archivos estáticos
+FROM nginx:alpine
+
+# Copiar los archivos construidos al directorio de Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Exponer el puerto 80
+EXPOSE 80
+
+# Comando para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,6 +1,5 @@
 "use strict";
 import User from "../entity/user.entity.js";
-import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
 
 async function createUsers() {

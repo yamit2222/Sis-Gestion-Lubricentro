@@ -18,7 +18,7 @@ export const sequelize = new Sequelize(
     host: DB_HOST,
     port: DB_PORT,
     dialect: 'mysql',
-    logging: process.env.NODE_ENV === 'development' ? false : false,
+    logging: NODE_ENV === 'development' ? console.log : false,
     define: {
       timestamps: true,
       createdAt: 'createdAt',

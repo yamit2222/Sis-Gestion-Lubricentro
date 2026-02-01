@@ -41,6 +41,9 @@ async function setupServer() {
   app.use(cookieParser());
   app.use(morgan("dev"));
 
+  
+  // Solo usar JWT, que ya tienes configurado
+  /*
   app.use(
     session({
       secret: cookieKey,
@@ -50,12 +53,20 @@ async function setupServer() {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 24 horas
       },
+      // Configuración para producción
+      name: 'sessionId', // Cambiar nombre de cookie por seguridad
+      store: undefined, // Usar store por defecto pero configurado correctamente
     })
   );
+  */
 
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+
+  
   app.use(passport.initialize());
-  app.use(passport.session());
 
   passportJwtSetup();
 

@@ -1,9 +1,6 @@
 import axios from 'axios';
 import cookies from 'js-cookie';
-const API_URL = import.meta.env.VITE_BASE_URL || 'https://elsocio.up.railway.app/api';
-
-console.log('🔍 API_URL:', API_URL);
-console.log('🔍 VITE_BASE_URL:', import.meta.env.VITE_BASE_URL);
+const API_URL = import.meta.env.VITE_BASE_URL || 'https://lubricentros.up.railway.app/api';
 
 
 const instance = axios.create({

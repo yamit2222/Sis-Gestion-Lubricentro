@@ -19,12 +19,11 @@ RUN apk add --no-cache curl
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
-
 EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
+
+# Force rebuild 2026-02-01

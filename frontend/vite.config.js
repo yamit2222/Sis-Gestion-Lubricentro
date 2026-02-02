@@ -8,7 +8,11 @@ const dirname = path.dirname(filename);
 
 export default defineConfig({
   plugins: [react()],
-  preview: {port:1658, host:true},
+  preview: {
+    port: 1658,
+    host: true,
+    allowedHosts: ['lubricentros.up.railway.app']
+  },
   resolve: {
     alias: {
       '@components': path.resolve(dirname, './src/components'),

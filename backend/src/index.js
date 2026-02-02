@@ -21,7 +21,7 @@ async function setupServer() {
   app.use(
     cors({
       credentials: true,
-      origin: ["https://lubricentros.up.railway.app", "http://localhost:5173"],
+      origin: ["https://lubricentros.up.railway.app", "https://elsocio.up.railway.app", "http://localhost:5173"],
     })
   );
 
